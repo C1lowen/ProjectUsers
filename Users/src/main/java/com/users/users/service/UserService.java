@@ -1,5 +1,4 @@
 package com.users.users.service;
-import com.users.users.model.UserRole;
 import com.users.users.repository.*;
 import com.users.users.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,20 +12,20 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> getAll() {
-        return userRepository.getAll();
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
-    public boolean add(User user) {
-        return userRepository.add(user);
+    public User add(User user) {
+        return userRepository.save(user);
     }
 
-    public boolean remove(int id) {
-        return userRepository.remove(id);
+    public void deleteById(Integer id) {
+        userRepository.deleteById(id);
     }
 
-    public boolean update(User user) {
-        return userRepository.update(user);
+    public boolean updateUser(User user) {
+        return userRepository.updateUserById(user);
     }
 
 
@@ -35,7 +34,7 @@ public class UserService {
     }
 
 
-    public List<UserRole> getAllJoined() {
-        return userRepository.getAllJoined();
-    }
+//    public List<UserRole> getAllJoined() {
+//        return userRepository.getAllJoined();
+//    }
 }

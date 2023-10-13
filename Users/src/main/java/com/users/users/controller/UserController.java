@@ -1,7 +1,6 @@
 package com.users.users.controller;
 
 import com.users.users.model.User;
-import com.users.users.model.UserRole;
 import com.users.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,7 @@ public class UserController {
 
     @GetMapping("/all")
     public List<User> getAll() {
-        return userService.getAll();
+        return userService.findAll();
     }
 
     @PostMapping("/add")
@@ -25,14 +24,14 @@ public class UserController {
         userService.add(user);
     }
 
-    @PostMapping("/remove/{id}")
+    @DeleteMapping ("/remove/{id}")
     public void remove(@PathVariable Integer id) {
-        userService.remove(id);
+        userService.deleteById(id);
     }
 
     @PostMapping("/update")
     public void update(@RequestBody User user) {
-        userService.update(user);
+        userService.updateUser(user);
     }
 
     @GetMapping("/allName/{name}")
@@ -40,9 +39,9 @@ public class UserController {
         return userService.getByName(name);
     }
 
-    @GetMapping("/allJoined")
-    public List<UserRole> getAllJoined() {
-        return userService.getAllJoined();
-    }
+//    @GetMapping("/allJoined")
+//    public List<UserRole> getAllJoined() {
+//        return userService.getAllJoined();
+//    }
 
 }
