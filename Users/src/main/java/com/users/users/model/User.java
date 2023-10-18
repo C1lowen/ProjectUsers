@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.boot.jaxb.SourceType;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity(name = "users")
 @Data
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -25,4 +27,8 @@ public class User {
     @JsonIgnore
     private Role role;
 
+    public User(String name, Role role) {
+        this.name = name;
+        this.role = role;
+    }
 }

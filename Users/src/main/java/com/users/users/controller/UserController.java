@@ -1,7 +1,8 @@
 package com.users.users.controller;
 
+import com.users.users.dto.CreateUserDTO;
 import com.users.users.model.User;
-import com.users.users.model.UserSaveModel;
+
 import com.users.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public void add(@RequestBody @Validated UserSaveModel user) {
+    public void add(@RequestBody @Validated CreateUserDTO user) {
         userService.add(user);
     }
 

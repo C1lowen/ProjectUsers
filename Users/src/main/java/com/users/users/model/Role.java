@@ -3,6 +3,7 @@ package com.users.users.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
@@ -12,8 +13,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity(name = "roles")
 @Data
+@NoArgsConstructor
 public class Role {
-
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private int id;
@@ -23,4 +24,7 @@ public class Role {
     @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
     private List<User> users;
 
+    public Role(int id) {
+        this.id = id;
+    }
 }
