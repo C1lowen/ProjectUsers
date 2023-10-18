@@ -1,9 +1,12 @@
 package com.users.users.controller;
 
 import com.users.users.model.User;
+import com.users.users.model.UserSaveModel;
 import com.users.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.users.users.dto.UserDTO;
 
 import java.util.List;
 
@@ -15,12 +18,12 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/all")
-    public List<User> getAll() {
+    public List<UserDTO> getAll() {
         return userService.findAll();
     }
 
     @PostMapping("/add")
-    public void add(@RequestBody User user) {
+    public void add(@RequestBody @Validated UserSaveModel user) {
         userService.add(user);
     }
 
@@ -30,13 +33,9 @@ public class UserController {
     }
 
     @GetMapping("/allName/{name}")
-    public List<User> getByName(@PathVariable String name) {
+    public List<UserDTO> getByName(@PathVariable String name) {
         return userService.getByName(name);
     }
 
-    @GetMapping("/allJoined")
-    public List<User> getAllJoined() {
-        return userService.getAllJoined();
-    }
 
 }

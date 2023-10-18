@@ -16,8 +16,4 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     List<User> getByName(String name);
-
-    @Query(value = "select u.id, u.name as user_name, r.name as role_name from users u left join roles r on u.role_id = r.id",nativeQuery = true)
-    List<User> getAllJoined();
-
 }

@@ -1,6 +1,8 @@
 package com.users.users.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.boot.jaxb.SourceType;
 
@@ -16,9 +18,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private int id;
+    @Size(min = 3, max = 15)
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Role role;
 
 }
