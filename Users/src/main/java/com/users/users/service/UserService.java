@@ -12,6 +12,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+//    @Autowired
+//    private RoleRepository roleRepository;
+
     public List<User> findAll() {
         return userRepository.findAll();
     }
@@ -24,17 +27,12 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public boolean updateUser(User user) {
-        return userRepository.updateUserById(user);
-    }
-
-
     public List<User> getByName(String name) {
         return userRepository.getByName(name);
     }
 
 
-//    public List<UserRole> getAllJoined() {
-//        return userRepository.getAllJoined();
-//    }
+    public List<User> getAllJoined() {
+        return userRepository.getAllJoined();
+    }
 }

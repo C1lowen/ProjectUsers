@@ -29,19 +29,14 @@ public class UserController {
         userService.deleteById(id);
     }
 
-    @PostMapping("/update")
-    public void update(@RequestBody User user) {
-        userService.updateUser(user);
-    }
-
     @GetMapping("/allName/{name}")
     public List<User> getByName(@PathVariable String name) {
         return userService.getByName(name);
     }
 
-//    @GetMapping("/allJoined")
-//    public List<UserRole> getAllJoined() {
-//        return userService.getAllJoined();
-//    }
+    @GetMapping("/allJoined")
+    public List<User> getAllJoined() {
+        return userService.getAllJoined();
+    }
 
 }
