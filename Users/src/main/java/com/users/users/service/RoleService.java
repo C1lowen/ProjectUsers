@@ -18,8 +18,7 @@ public class RoleService {
     private RoleRepository roleRepository;
 
     public List<RoleDTO> findAll() {
-        List<RoleDTO> rolesDTOFindAll = createListRoleDTO(roleRepository.findAll());
-        return rolesDTOFindAll;
+        return createListRoleDTO(roleRepository.findAll());
     }
 
     public void add(Role role) {
@@ -31,8 +30,7 @@ public class RoleService {
     }
 
     public List<RoleDTO> getByName(String name) {
-        List<RoleDTO> rolesDTOByName = createListRoleDTO(roleRepository.getByName(name));
-        return rolesDTOByName;
+        return createListRoleDTO(roleRepository.getByName(name));
     }
 
 

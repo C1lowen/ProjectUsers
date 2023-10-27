@@ -1,22 +1,29 @@
 package com.users.users.service;
 import com.users.users.dto.CreateUserDTO;
-import com.users.users.dto.RoleDTO;
 import com.users.users.dto.UserDTO;
 import com.users.users.model.Role;
 
 import com.users.users.repository.*;
-import com.users.users.model.User;
+import com.users.users.model.CustomUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
+import java.beans.Transient;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -26,18 +33,38 @@ public class UserService {
 
 
     public List<UserDTO> findAll() {
-        List<UserDTO> usersDTOFindAll = createListUserDTO(userRepository.findAll());
-        return usersDTOFindAll;
+        return createListUserDTO(userRepository.findAll());
     }
 
-    public void add(CreateUserDTO user) {
-        Optional<Role> roleFindById = roleRepository.findById(user.getRole());
-        if(roleFindById.isEmpty()){
-            throw new RuntimeException();
+    public void add(CustomUser user) {
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
         }
 
-        User newUser = new User(user.getName(), roleFindById.get());
-        userRepository.save(newUser);
+       userRepository.save(user);
+    }
+
+    public Optional<CustomUser> findByName(String name){
+       return userRepository.findByName(name);
+    }
+
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        CustomUser user = findByName(username).orElseThrow(() -> new UsernameNotFoundException(
+                "Пользователь с именем " + username + " не найден"
+        ));
+
+        List<GrantedAuthority> roles = Arrays.asList(
+                new SimpleGrantedAuthority(user.getRole().toString())
+        );
+
+        return new User(user.getName(), user.getPassword(), roles);
+    }
+
+    public void createNewUser(CustomUser customUser){
+        customUser.setRole(roleRepository.findByName("User").get());
+        userRepository.save(customUser);
     }
 
     public void deleteById(Integer id) {
@@ -45,13 +72,12 @@ public class UserService {
     }
 
     public List<UserDTO> getByName(String name) {
-        List<UserDTO> usersDTOGetByName = createListUserDTO(userRepository.getByName(name));
-        return usersDTOGetByName;
+        return createListUserDTO(userRepository.getByName(name));
     }
 
-    private List<UserDTO> createListUserDTO(List<User> users){
+    private List<UserDTO> createListUserDTO(List<CustomUser> users){
         return users.stream()
-                .map(user -> new UserDTO(user.getId(),user.getName(), user.getRole().getName()))
+                .map(user -> new UserDTO(user.getId(),user.getName(), user.getRole().getName(),user.getPassword(), user.getEmail()))
                 .collect(Collectors.toList());
     }
 }

@@ -1,34 +1,39 @@
 package com.users.users.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.boot.jaxb.SourceType;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.*;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity(name = "users")
 @Data
 @NoArgsConstructor
-public class User {
+public class CustomUser {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private int id;
-    @Size(min = 3, max = 15)
+
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Role role;
 
-    public User(String name, Role role) {
+    private String password;
+
+    private String email;
+
+    public CustomUser(String name, Role role, String password, String email) {
         this.name = name;
         this.role = role;
+        this.password = password;
+        this.email = email;
     }
+
 }

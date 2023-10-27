@@ -8,6 +8,4 @@ public class CreateUserDTO {
     private String name;
     private int role;
 
-
-
 }
